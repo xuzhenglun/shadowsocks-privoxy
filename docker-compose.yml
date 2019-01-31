@@ -1,0 +1,19 @@
+version: "2"
+
+services:
+  local:
+    image: mritd/shadowsocks
+    ports:
+    - 1080:1080
+    command: '-m "ss-local" -s "-t 10s -s <ip> -p 443 -b 0.0.0.0 -b ::0 -l 1080 -m chacha20-ietf-poly1305 -k <password>"'
+    restart: always
+
+  privoxy:
+    build:
+      context: .
+      dockerfile: ./privoxy.Dockerfile
+    ports:
+    - 1082:1082
+    volumes:
+    - ./privoxy.conf:/etc/privoxy/config
+    restart: always
